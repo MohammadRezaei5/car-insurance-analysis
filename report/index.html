@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>گزارش تحلیلی داده‌های بیمه خودرو</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <aside class="toc-sidebar">
+        <h3 class="toc-title">فهرست عناوین</h3>
+        <ul class="toc-list">
+          <li class="toc-item">
+            <a href="#sec-1" class="toc-link">۱. معرفی مجموعه داده و هدف</a>
+          </li>
+          <li class="toc-item">
+            <a href="#sec-2" class="toc-link">۲. ردیف‌های تکراری و کیفیت</a>
+          </li>
+          <li class="toc-item">
+            <a href="#sec-3" class="toc-link">۳. آمار توصیفی و ساختار</a>
+          </li>
+          <li class="toc-item">
+            <a href="#sec-4" class="toc-link">۴. توزیع دسته‌ای و همبستگی</a>
+          </li>
+          <li class="toc-item">
+            <a href="#sec-5" class="toc-link">۵. نتیجه‌گیری و یافته‌ها</a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-container">
+        <header>
+          <h1>گزارش تحلیلی داده‌های بیمه خودرو</h1>
+          <div class="meta-info">
+            <span><strong>تحلیلگر:</strong> محمد رضائی</span>
+            <span
+              ><strong>مقطع:</strong> ترم ۳ ارشد مدیریت کسب و کار (MBA)</span
+            >
+            <span><strong>تاریخ:</strong> شهریور ۱۴۰۵</span>
+          </div>
+        </header>
+
+        <section id="sec-1">
+          <h2>۱. معرفی مجموعه داده و هدف اصلی</h2>
+          <p>
+            این مجموعه داده مربوط به بیمه خودرو است و از دو جدول مکمل تشکیل شده
+            است: جدول Frequency شامل ۶۷۷٬۹۹۱ بیمه‌نامه با اطلاعاتی مانند سن
+            راننده، سن و قدرت خودرو، نوع سوخت، منطقه و تعداد خسارت‌ها است و جدول
+            Severity شامل ۲۶٬۴۴۴ رکورد از مبالغ خسارت‌های پرداخت‌شده می‌باشد.
+          </p>
+          <p>
+            هر بیمه‌نامه با شناسه IDpol به خسارت‌های خود متصل می‌شود؛ بنابراین
+            می‌توان هم احتمال وقوع خسارت و هم هزینه واقعی آن را تحلیل کرد. هدف
+            اصلی این داده، شناسایی عوامل مؤثر بر ریسک و کمک به محاسبه حق بیمه
+            منصفانه برای رانندگان است.
+          </p>
+        </section>
+
+        <section id="sec-2">
+          <h2>۲. بررسی ردیف‌های تکراری و کیفیت داده‌ها</h2>
+          <p>
+            در این دیتاست ممکن است یک بیمه‌نامه چند خسارت داشته باشد؛ به عنوان
+            مثال، یک شناسه می‌تواند خسارت‌های متفاوتی مانند ۱۲۰۰، ۱۸۰۰ و ۱۰00
+            داشته باشد. این موارد تکراری نیستند زیرا مبالغ آن‌ها متفاوت است.
+            تنها ردیفی که هم IDpol و هم ClaimAmount در آن کاملاً برابر باشد،
+            تکراری واقعی محسوب می‌شود.
+          </p>
+          <p>
+            نتایج بررسی کیفیت داده نشان می‌دهد که هر دو دیتاست از نظر مقادیر
+            گمشده کاملاً سالم هستند؛ در df_freq تمام ۱۲ ستون و در df_sev هر دو
+            ستون هیچ مقدار missing ندارند و درصد Missing در هر دو ۰٪ است. همچنین
+            در df_freq هیچ ردیف تکراری وجود ندارد، اما در df_sev تعداد ۲۳۵ ردیف
+            تکراری واقعی شناسایی و حذف گردید و تعداد رکوردها از ۲۶٬۴۴۴ به ۲۶٬۲۰۹
+            کاهش یافت.
+          </p>
+        </section>
+
+        <section id="sec-3">
+          <h2>۳. تحلیل آمار توصیفی و ساختار متغیرها</h2>
+          <p>
+            آمار توصیفی نشان می‌دهد که در df_freq بیشتر بیمه‌نامه‌ها تعداد خسارت
+            صفر دارند (میانه ClaimNb برابر ۰ است)، در حالی که حداکثر تعداد خسارت
+            برای یک بیمه‌نامه ۱۶ مورد بوده است. Exposure نیز به‌طور متوسط حدود
+            ۰.۵۳ سال است. سن متوسط رانندگان (DrivAge) حدود ۴۵ سال و سن متوسط
+            خودروها (VehAge) حدود ۷ سال می‌باشد.
+          </p>
+          <p>
+            شناسه IDpol در df_freq دارای ۶۷۷٬۹۹۱ مقدار یکتا و در df_sev دارای
+            ۲۴٬۹۴۴ مقدار یکتا است که نشان می‌دهد برخی بیمه‌نامه‌ها چند خسارت
+            داشته‌اند. ClaimNb با ۱۱ مقدار متفاوت یک متغیر شمارشی محدود است، در
+            حالی که Exposure با ۱۸۱ مقدار و Density با ۱۶۰۷ مقدار متفاوت توزیع
+            شده‌اند. در df_sev نیز ClaimAmount حدود ۱۲٬۲۵۵ مقدار متفاوت دارد که
+            بیانگر پیوسته و متنوع بودن مبلغ خسارت است.
+          </p>
+        </section>
+
+        <section id="sec-4">
+          <h2>۴. توزیع دسته‌ای، همبستگی و داده‌های پرت</h2>
+          <p>
+            بررسی ستون‌های دسته‌ای نشان می‌دهد که VehBrand شامل ۱۱ برند خودرو
+            است و بیشترین فراوانی مربوط به B12، B1 و B2 است. VehGas دارای دو نوع
+            سوخت است که Regular با ۳۴۵٬۸۶۳ مورد کمی بیشتر از Diesel با ۳۳۲٬۱۲۸
+            مورد است. ستون Area دارای ۶ دسته (بیشترین دسته C با ۱۹۱٬۸۷۴ رکورد و
+            کمترین F با ۱۷٬۹۵۳) و Region دارای ۲۲ منطقه است که بیشترین فراوانی
+            مربوط به استان Centre با ۱۶۰٬۵۹۵ رکورد می‌باشد.
+          </p>
+          <p>
+            ماتریس همبستگی نشان می‌دهد اکثر متغیرهای عددی همبستگی ضعیفی با هم
+            دارند. مهم‌ترین رابطه مربوط به سن راننده (DrivAge) و BonusMalus است
+            که با ضریب ۰.۴۸- همبستگی منفی نسبتاً قوی دارد؛ یعنی رانندگان مسن‌تر
+            معمولاً امتیاز Bonus-Malus بهتری دارند.
+          </p>
+          <p>
+            در df_sev میانگین مبلغ خسارت حدود ۲,۲۶۵ است، اما انحراف معیار بسیار
+            بزرگ‌تر از میانگین بوده و حداکثر خسارت به حدود ۴.۰۷ میلیون می‌رسد.
+            این اختلاف شدید و نمودارهای جعبه‌ای (Box Plot) نشان‌دهنده حضور
+            داده‌های پرت (Outliers) و توزیع چوله به راست شدید در مبلغ خسارت است.
+          </p>
+        </section>
+
+        <section id="sec-5">
+          <h2>۵. نتیجه‌گیری و یافته‌های کلیدی</h2>
+          <ul>
+            <li>
+              اکثر رانندگان این جامعه از سه برند خودرویی B12، B1 و B2 استفاده
+              می‌کنند و نوع سوخت خودروها به‌طور تقریباً مساوی بین بنزین معمولی و
+              دیزل تقسیم شده است.
+            </li>
+            <li>
+              از نظر جغرافیایی، تمرکز اصلی خودروها در مناطق C و D و عمدتاً در
+              استان Centre ثبت شده است.
+            </li>
+            <li>
+              همبستگی منفی معناداری (۰.۴۸-) بین سن راننده و ضریب Bonus-Malus
+              وجود دارد.
+            </li>
+            <li>
+              توزیع خسارت‌های مالی به شدت غیرنرمال بوده و شامل خسارت‌های نادر
+              اما بسیار سنگین تا سقف ۴.۰۷ میلیون واحد است.
+            </li>
+          </ul>
+        </section>
+        <!-- images -->
+        <div class="img-flex">
+          <div class="img-card" data-fullsrc="images/correlation.png">
+            <div class="img-wrapper">
+              <img
+                src="images/correlation.png"
+                alt="correlation"
+                class="zoom-img"
+              />
+            </div>
+          </div>
+          <div class="img-card" data-fullsrc="images/box-plot-1.png">
+            <div class="img-wrapper">
+              <img
+                src="images/box-plot-1.png"
+                alt="box-plot-1"
+                class="zoom-img"
+              />
+            </div>
+          </div>
+          <div class="img-card" data-fullsrc="images/box-plot-2.png">
+            <div class="img-wrapper">
+              <img
+                src="images/box-plot-2.png"
+                alt="box-plot-2"
+                class="zoom-img"
+              />
+            </div>
+          </div>
+          <div class="img-card" data-fullsrc="images/categorical-columns.png">
+            <div class="img-wrapper">
+              <img
+                src="images/categorical-columns.png"
+                alt="categorical-columns"
+                class="zoom-img"
+              />
+            </div>
+          </div>
+          <div class="img-card" data-fullsrc="images/histogram-1.png">
+            <div class="img-wrapper">
+              <img
+                src="images/histogram-1.png"
+                alt="histogram-1"
+                class="zoom-img"
+              />
+            </div>
+          </div>
+          <div class="img-card" data-fullsrc="images/histogram-2.png">
+            <div class="img-wrapper">
+              <img
+                src="images/histogram-2.png"
+                alt="histogram-2"
+                class="zoom-img"
+              />
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <!-- مدال پاپ‌آپ نمایش عکس بزرگ -->
+    <div id="lightbox-modal" class="lightbox-modal" aria-hidden="true">
+      <div class="lightbox-content">
+        <button class="lightbox-close" id="lightbox-close" title="بستن">
+          &times;
+        </button>
+        <img src="" alt="" id="lightbox-img" class="lightbox-img" />
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
